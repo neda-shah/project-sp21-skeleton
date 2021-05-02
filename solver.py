@@ -93,6 +93,7 @@ if __name__ == '__main__':
         for input_path in inputs:
             output_path = 'outputs/' + d + '/' + basename(normpath(input_path))[:-3] + '.out'
             G = read_input_file(input_path)
+            t = nx.number_of_nodes(G) - 1
             c, k = solve(G)
             assert is_valid_solution(G, c, k, t)
             distance = calculate_score(G, c, k, t)
