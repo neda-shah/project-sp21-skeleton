@@ -33,7 +33,7 @@ def solve(G):
     while v:
     	max_city = None
     	max_score = 0
-    	shortest = nx.single_source_dijkstra_path(H, 0)[t] # get the shortest path from s to t
+    	shortest = nx.dijkstra_path(H, 0, t) # get the shortest path from s to t
     	for i in range(1, len(shortest) - 1): # iterate through nodes in the shortest path
     		curr = shortest[i] # current node
     		if is_valid_solution(H, [curr], []): # check that graph won't 
@@ -51,7 +51,7 @@ def solve(G):
     while e:
     	max_edge = None
     	max_score = 0
-    	shortest = nx.single_source_dijkstra_path(H, 0)[t]
+    	shortest = nx.dijkstra_path(H, 0, t)
     	for i in range(0, len(shortest) - 1):
     		curr = (shortest[i], shortest[i + 1])
     		if is_valid_solution(H, [], [curr]):
@@ -74,25 +74,25 @@ def solve(G):
 
 # Usage: python3 solver.py test.in
 
-# if __name__ == '__main__':
-#     assert len(sys.argv) == 2
-#     path = sys.argv[1]
-#     G = read_input_file(path)
-#     c, k = solve(G)
-#     assert is_valid_solution(G, c, k)
-#     print("Shortest Path Difference: {}".format(calculate_score(G, c, k)))
-#     write_output_file(G, c, k, 'outputs/small-1.out')
-
-
-# For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
 if __name__ == '__main__':
-    dirs = ['small', 'medium', 'large']
-    for d in dirs:
-        inputs = glob.glob('inputs/' + d + '/*')
-        for input_path in inputs:
-            output_path = 'outputs/' + d + '/' + basename(normpath(input_path))[:-3] + '.out'
-            G = read_input_file(input_path)
-            c, k = solve(G)
-            assert is_valid_solution(G, c, k)
-            distance = calculate_score(G, c, k)
-            write_output_file(G, c, k, output_path)
+    assert len(sys.argv) == 2
+    path = sys.argv[1]
+    G = read_input_file(path)
+    c, k = solve(G)
+    assert is_valid_solution(G, c, k)
+    print("Shortest Path Difference: {}".format(calculate_score(G, c, k)))
+    write_output_file(G, c, k, 'outputs/small-1.out')
+
+
+# # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
+# if __name__ == '__main__':
+#     dirs = ['small', 'medium', 'large']
+#     for d in dirs:
+#         inputs = glob.glob('inputs/' + d + '/*')
+#         for input_path in inputs:
+#             output_path = 'outputs/' + d + '/' + basename(normpath(input_path))[:-3] + '.out'
+#             G = read_input_file(input_path)
+#             c, k = solve(G)
+#             assert is_valid_solution(G, c, k)
+#             distance = calculate_score(G, c, k)
+#             write_output_file(G, c, k, output_path)
