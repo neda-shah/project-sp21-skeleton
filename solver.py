@@ -86,10 +86,10 @@ def solve(G):
         elif (max_edge_score >= max_city_score) and e: # edge is better
             remove_edge(H, t, k, max_edge)
             e -= 1
-        elif v: # vertex can be removed
+        elif v and not (max_city is None): # vertex can be removed
             remove_vertex(H, t, c, max_city)
             v -= 1
-        elif e: # edge can be removed 
+        elif e and not (max_edge is None): # edge can be removed 
             remove_edge(H, t, k, max_edge)
             e -= 1
         else:
