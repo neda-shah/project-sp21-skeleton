@@ -18,7 +18,7 @@ def find_params(G):
 
 # Removes the edge in G that will increase the length of the shortest s-t path the most. 
 # returns the edge if an edge was removed, and returns None otherwise.
-def remove_edge(G, t, k):
+def find_max_edge(G, t):
     max_edge = None
     max_score = 0
     shortest = nx.dijkstra_path(G, 0, t, weight='weight')
@@ -29,10 +29,34 @@ def remove_edge(G, t, k):
             if temp_score > max_score:
                 max_score = temp_score
                 max_edge = curr
-    if not (max_edge is None):
-        k.append(max_edge)
-        G.remove_edges_from([max_edge])
-    return max_edge
+    # if not (max_edge is None):
+    #     k.append(max_edge)
+    #     G.remove_edges_from([max_edge])
+    return max_edge, max_score
+
+def find_max_vertex(G, t):
+    max_city = None
+    max_score = 0
+    shortest = nx.dijkstra_path(G, 0, t, weight='weight') # get the shortest path from s to t
+    for i in range(1, len(shortest) - 1): # iterate through nodes in the shortest path
+        curr = shortest[i]
+        if is_valid_solution(G, [curr], [], t):
+            temp_score = calculate_score(G, [curr], [], t)
+            if temp_score > max_score:
+                max_score = temp_score
+                max_city = curr
+    # if not (max_city is None):
+    #     c.append(max_city)
+    #     G.remove_nodes_from([max_city])
+    return max_city, max_score
+
+def remove_vertex(G, t, c, max_city):
+    c.append(max_city)
+    G.remove_nodes_from([max_city])
+
+def remove_edge(G, t, k, max_edge):
+    k.append(max_edge)
+    G.remove_edges_from([max_edge])
 
 def solve(G):
     """
@@ -48,35 +72,29 @@ def solve(G):
     e, v = find_params(G) 
     H = G.copy()
     # Handles removing nodes
-    while v:
-        max_city = None
-        max_score = 0
-        shortest = nx.dijkstra_path(H, 0, t, weight='weight') # get the shortest path from s to t
-        for i in range(1, len(shortest) - 1): # iterate through nodes in the shortest path
-            curr = shortest[i]
-            if is_valid_solution(H, [curr], [], t):
-                temp_score = calculate_score(H, [curr], [], t)
-                if temp_score > max_score:
-                    max_score = temp_score
-                    max_city = curr
-        if max_city is None:
-            removed_e = remove_edge(H, t, k)
-            if removed_e is None:
-                break
-            else:
-                e -= 1
-        else:
-            c.append(max_city)
-            H.remove_nodes_from([max_city])
+    while v or e:
+        max_edge, max_edge_score = find_max_edge(H, t)
+        max_city, max_city_score = find_max_vertex(H, t)
+        if (max_edge is None) and (max_city is None):
+            break # no way to increase shortest path
+        elif (max_edge is None) and v: # no possible edges to be removed
+            remove_vertex(H, t, c, max_city)
             v -= 1
-    
-    # Handles removing edges
-    while e:
-        removed_e = remove_edge(H, t, k)
-        if removed_e is None:
-            break
-        else:
+        elif (max_city is None) and e: # no possible nodes to be removed
+            remove_edge(H, t, k, max_edge)
             e -= 1
+        elif (max_edge_score >= max_city_score) and e: # edge is better
+            remove_edge(H, t, k, max_edge)
+            e -= 1
+        elif v: # vertex can be removed
+            remove_vertex(H, t, c, max_city)
+            v -= 1
+        elif e: # edge can be removed 
+            remove_edge(H, t, k, max_edge)
+            e -= 1
+        else:
+            break
+
     return c, k
 
 
@@ -95,7 +113,7 @@ def solve(G):
 #     write_output_file(G, c, k, 'outputs/small-1.out')
 
 
-# # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
+# # # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
 if __name__ == '__main__':
     dirs = ['small', 'medium', 'large']
     for d in dirs:
