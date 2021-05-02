@@ -39,10 +39,9 @@ def calculate_score(G, c, k, t):
     """
     H = G.copy()
     assert is_valid_solution(H, c, k, t)
-    node_count = len(H.nodes)
-    original_min_dist = nx.dijkstra_path_length(H, 0, node_count-1)
+    original_min_dist = nx.dijkstra_path_length(H, 0, t)
     H.remove_edges_from(k)
     H.remove_nodes_from(c)
-    final_min_dist = nx.dijkstra_path_length(H, 0, node_count-1)
+    final_min_dist = nx.dijkstra_path_length(H, 0, t)
     difference = final_min_dist - original_min_dist
     return difference
