@@ -26,14 +26,14 @@ def solve(G):
     """
     c = [] # list of cities to remove
     k = [] # list of edges to remove
-    n = nx.number_of_nodes(G)
+    t = nx.number_of_nodes(G) 
     e, v = find_params(G) 
     H = G.copy()
     # Handles removing nodes
     while v:
     	max_city = None
     	max_score = 0
-    	shortest = nx.single_source_dijkstra_path(H, 0)[n - 1] # get the shortest path from s to t
+    	shortest = nx.single_source_dijkstra_path(H, 0)[t] # get the shortest path from s to t
     	for i in range(1, len(shortest) - 1): # iterate through nodes in the shortest path
     		curr = shortest[i] # current node
     		if is_valid_solution(H, [curr], []): # check that graph won't 
@@ -46,13 +46,12 @@ def solve(G):
     	c.append(max_city)
     	H.remove_nodes_from([max_city])
     	v -= 1
-    	n -= 1
     
     # Handles removing edges
     while e:
     	max_edge = None
     	max_score = 0
-    	shortest = nx.single_source_dijkstra_path(H, 0)[n - 1]
+    	shortest = nx.single_source_dijkstra_path(H, 0)[t]
     	for i in range(0, len(shortest) - 1):
     		curr = (shortest[i], shortest[i + 1])
     		if is_valid_solution(H, [], [curr]):
