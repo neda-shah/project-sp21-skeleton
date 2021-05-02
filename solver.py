@@ -88,7 +88,7 @@ def solve(G):
 if __name__ == '__main__':
     dirs = ['small', 'medium', 'large']
     for d in dirs:
-        inputs = glob.glob('inputs/' + d '/*')
+        inputs = glob.glob('inputs/' + d + '/*')
         for input_path in inputs:
             output_path = 'outputs/' + basename(normpath(input_path))[:-3] + '.out'
             G = read_input_file(input_path)
