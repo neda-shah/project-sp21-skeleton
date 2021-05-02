@@ -46,6 +46,7 @@ def solve(G):
     	c.append(max_city)
     	H.remove_nodes_from([max_city])
     	v -= 1
+    	n -= 1
     
     # Handles removing edges
     while e:
@@ -90,7 +91,7 @@ if __name__ == '__main__':
     for d in dirs:
         inputs = glob.glob('inputs/' + d + '/*')
         for input_path in inputs:
-            output_path = 'outputs/' + basename(normpath(input_path))[:-3] + '.out'
+            output_path = 'outputs/' + d + '/' + basename(normpath(input_path))[:-3] + '.out'
             G = read_input_file(input_path)
             c, k = solve(G)
             assert is_valid_solution(G, c, k)
