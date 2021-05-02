@@ -85,7 +85,7 @@ def solve(G):
 #     write_output_file(G, c, k, 'outputs/small-1.out')
 
 
-# # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
+# # # For testing a folder of inputs to create a folder of outputs, you can use glob (need to import it)
 if __name__ == '__main__':
     dirs = ['small', 'medium', 'large']
     for d in dirs:
