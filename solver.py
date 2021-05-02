@@ -26,7 +26,7 @@ def solve(G):
     """
     c = [] # list of cities to remove
     k = [] # list of edges to remove
-    t = nx.number_of_nodes(G) 
+    t = nx.number_of_nodes(G) - 1 
     e, v = find_params(G) 
     H = G.copy()
     # Handles removing nodes
