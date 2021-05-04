@@ -94,7 +94,6 @@ def solve(G):
             e -= 1
         else:
             break
-
     return c, k
 
 
